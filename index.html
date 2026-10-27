@@ -66,6 +66,19 @@ img{display:block;max-width:100%}
 .cat .go svg{width:16px;height:16px}
 .cat.wide{grid-column:1 / -1;min-height:84px}
 
+/* استايل كارد العروض في الواجهة الرئيسية بنفس الديزاين القديم */
+.cat.offers-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(110deg, var(--maroon), var(--maroon2) 55%, var(--maroon));
+  color: #fff;
+  border: 1px solid #ffc61b66;
+  min-height: 84px;
+}
+.cat.offers-card .num { color: var(--yellow); }
+.cat.offers-card .name { color: var(--yellow); font-size: 21px; }
+.cat.offers-card .meta { color: #f3e4bf; }
+.cat.offers-card .go { background: var(--yellow); color: var(--maroon); }
+
 .hint{margin:16px 16px 0;padding:12px 14px;border-radius:14px;background:var(--bg2);border:1px dashed #5a4626;font-size:13px;color:#e4d4ae;display:flex;gap:10px;align-items:center}
 .hint b{color:var(--yellow)}
 .hint .ic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--maroon);display:grid;place-items:center;color:#fff;font-weight:900}
@@ -121,8 +134,6 @@ img{display:block;max-width:100%}
   display:none;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--wa)}
 .btn .badge.show{display:flex;animation:pop .3s}
 @keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
-.ripple{position:absolute;border-radius:50%;background:#fff6;transform:scale(0);animation:rip .55s ease-out forwards;pointer-events:none}
-@keyframes rip{to{transform:scale(4);opacity:0}}
 
 .scrim{position:fixed;inset:0;z-index:30;background:#000a;opacity:0;pointer-events:none;transition:opacity .25s}
 .scrim.open{opacity:1;pointer-events:auto}
@@ -143,7 +154,6 @@ img{display:block;max-width:100%}
 .it .sum{width:64px;text-align:left;font-weight:900;color:var(--yellow)}
 .total{display:flex;justify-content:space-between;padding:12px 18px 4px;font-weight:900;font-size:17px}
 .total span:last-child{color:var(--yellow)}
-.small-note{padding:0 18px;font-size:11.5px;color:#a8977a}
 .send{margin:12px 14px 14px;height:54px;border:0;border-radius:16px;background:var(--wa);color:#063b1c;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:10px}
 .send svg{width:22px;height:22px}
 .empty-cart{padding:26px 18px;text-align:center;color:#c9b68e;font-size:14px}
@@ -174,7 +184,7 @@ img{display:block;max-width:100%}
 <div class="wrap fade" id="app"></div>
 
 <nav class="bar" aria-label="أزرار الطلب">
-  <a class="btn home" id="homeBtn" href="?page=1">
+  <a class="btn home" id="homeBtn" href="?page=0">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"></path><path d="M5 10v10h14V10"></path><path d="M10 20v-6h4v6"></path></svg>
     <span id="homeLbl">الصفحة الرئيسية</span>
   </a>
@@ -211,6 +221,18 @@ const CONFIG = {
 };
 
 const MENU = {
+  1: { title:"العروض الخاصة 🔥", sections:[
+    { title:"عرض الـ 200 جنيه", items:[
+      ["عرض 200 (1): برجر كرسبي + برجر زنجر", 200],
+      ["عرض 200 (2): برجر فراخ + ساندوتش كفتة لحمة", 200],
+      ["عرض 200 (3): برجر لحمة + ساندوتش فاهيتا", 200],
+      ["عرض 200 (4): وجبة ماريا فراخ + كبة مقلية", 200]
+    ]},
+    { title:"عرض الـ 150 جنيه", items:[
+      ["عرض 150 (1): ربع فرخة ورك + قطعة كبة مشوية", 150],
+      ["عرض 150 (2): فتة كرسبي أو زنجر + صوص رانش أو باربكيو", 150]
+    ]}
+  ]},
   3: { title:"شاورما الفراخ", sections:[
     { title:"الفتات والوجبات", items:[
       ["فتة شاورما وسط",170],
@@ -244,7 +266,7 @@ const MENU = {
   4: { title:"مشويات الفراخ", sections:[
     { title:"مشاوي الفراخ بالكيلو", cols:["كيلو","نص كيلو"], items:[
       ["شيش طاووق",[700,390]],
-      ["ستيك فراخ",[760,435]],
+      ["ستيك فراخ",[760,380]],
       ["كفتة كباب فراخ",[625,330]],
       ["جوانح مشوية",[400,220]]
     ], note:"تقدم مع:بطاطس - ثومية - مخلل - عيش"},
@@ -270,11 +292,11 @@ const MENU = {
     { title:"مشاوي اللحم بالكيلو", cols:["كيلو","نص كيلو"], items:[
       ["مشاوي مشكل",[950,495]],
       ["كباب شقف",[1150,590]],
-      ["ريش ضاني",[1550,825]],
+      ["ريش ضاني",[1550,800]],
       ["ستيك لحم",[1500,755]],
       ["كفتة كباب",[950,450]],
       ["كباب خشخاش",[1065,550],"صلصة الطماطم - فلفل حلو - فلفل حار - عيش"],
-      ["كبدة سودة",[680,345]],
+      ["كبدة سودة",[900,480]],
       ["نخاع مشوي",[150,null]]
     ], note:"تقدم مع: حمص - مخلل - طماطم مشوية - بصل مشوي - عيش"},
     { title:"وجبات مشاوي اللحم", items:[
@@ -289,12 +311,12 @@ const MENU = {
   ]},
   6: { title:"فراخ كرسبي", sections:[
     { title:"الوجبات", items:[
-      ["وجبة كرسبي 2 قطعة",130],
-      ["وجبة كرسبي 3 قطع",160],
-      ["وجبة كرسبي 5 قطع",255],
-      ["وجبة زنجر 2 قطعة",165],
-      ["وجبة زنجر 3 قطع",200],
-      ["وجبة زنجر 5 قطع",285],
+      ["وجبة كرسبي 2 قطعة",150],
+      ["وجبة كرسبي 3 قطع",180],
+      ["وجبة كرسبي 5 قطع",270],
+      ["وجبة زنجر 2 قطعة",175],
+      ["وجبة زنجر 3 قطع",225],
+      ["وجبة زنجر 5 قطع",310],
       ["وجبة فاهيتا",270],
       ["وجبة مكسيكانو",250]
     ]}
@@ -333,7 +355,7 @@ const MENU = {
       ["شرحات لحم على عجين",200],
       ["سناسل ومخاصي على عجين",150],
       ["شرحات فراخ على عجين",90],
-      ["نخاع على عجين",170]
+      ["نخاع على عجين",150]
     ]}
   ]},
   9: { title:"المناقيش", sections:[
@@ -381,9 +403,9 @@ const MENU = {
       ["بيتزا تشكن باربيكيو",[190,220,265]],
       ["بيتزا بيبروني",[140,160,180]],
       ["بيتزا الياسمين",[220,265,300]],
-      ["بيتزا سوسيس",[175,190,225]],
+      ["بيتزا سوسيس",[140,160,180]],
       ["بيتزا فيجي مشروم",[160,195,210]],
-      ["بيتزا ميكس جبن",[145,160,190]],
+      ["بيتزا ميكس جبن",[155,175,225]],
       ["إضافة حشو أطراف",[50,70,90]]
     ]}
   ]},
@@ -472,23 +494,23 @@ const cartCount = () => Object.values(cart).reduce((a,b)=>a+b.qty,0);
 const cartTotal = () => Object.values(cart).reduce((a,b)=>a+b.qty*b.price,0);
 
 function getPage(){
-  let p = Number(new URLSearchParams(location.search).get('page') || 1);
-  if (!Number.isInteger(p) || p < 1 || p > 13) p = 1;
+  let p = Number(new URLSearchParams(location.search).get('page') || 0);
+  if (!Number.isInteger(p) || p < 0 || p > 13 || (p > 1 && p < 3 && p !== 2)) p = 0;
   return p;
 }
 
 function render(page, push){
-  if (push) history.pushState({page}, '', '?page=' + page);
+  if (push) history.pushState({page}, '', page === 0 ? location.pathname : '?page=' + page);
   window.scrollTo(0,0);
   app.classList.remove('fade'); void app.offsetWidth; app.classList.add('fade');
-  if (page === 1) renderCover();
+  if (page === 0) renderCover();
   else if (page === 2) renderCategories();
   else renderCategory(page);
 
   const home = $('homeBtn');
-  if (page <= 2) { home.href = '?page=1'; $('homeLbl').textContent = 'الصفحة الرئيسية'; }
+  if (page <= 2) { home.href = '?page=0'; $('homeLbl').textContent = 'الصفحة الرئيسية'; }
   else { home.href = '?page=2'; $('homeLbl').textContent = 'القائمة الرئيسية'; }
-  document.title = page > 2 ? MENU[page].title + ' | منيو الياسمين' : 'منيو الياسمين';
+  document.title = page > 2 || page === 1 ? MENU[page].title + ' | منيو الياسمين' : 'منيو الياسمين';
   updateBadge();
 }
 
@@ -516,6 +538,7 @@ function renderCategories(){
       <span class="meta"><span>${n} صنف</span><span class="go">${icons.arrow}</span></span>
     </a>`;
   }).join('');
+  
   app.innerHTML = `
   <header class="head"><div class="photo"></div>
     <img class="logo" src="assets/logo.png" alt="الياسمين">
@@ -523,6 +546,16 @@ function renderCategories(){
     <div class="small">اختار القسم</div>
   </header>
   ${offerHTML()}
+  
+  <!-- زرار العروض البارز في القائمة الرئيسية يفتح صفحة العروض (page=1) بنفس طريقة المنيو -->
+  <div style="padding: 0 16px 6px;">
+    <a class="cat offers-card wide" href="?page=1" data-nav style="display:flex; text-decoration:none;">
+      <span class="num">🔥</span>
+      <span class="name" style="color:var(--yellow); font-size:21px;">العروض الخاصة</span>
+      <span class="meta"><span style="color:#f3e4bf;">أقوى العروض والوجبات</span><span class="go" style="background:var(--yellow); color:var(--maroon);">${icons.arrow}</span></span>
+    </a>
+  </div>
+
   <div class="grid">${cards}</div>
   <div class="hint"><span class="ic">+</span><span>دوس على <b>السعر</b> عشان تضيف الصنف لطلبك، وبعدين ابعته على <b>واتساب</b> بضغطة واحدة.</span></div>
   <p class="foot">الأسعار بالجنيه المصري</p>`;
@@ -530,9 +563,9 @@ function renderCategories(){
 
 function renderCategory(page){
   const m = MENU[page];
-  const idx = ORDER.indexOf(page);
-  const prev = ORDER[(idx - 1 + ORDER.length) % ORDER.length];
-  const next = ORDER[(idx + 1) % ORDER.length];
+  const isOffers = (page === 1);
+  const prev = isOffers ? 0 : ORDER[(ORDER.indexOf(page) - 1 + ORDER.length) % ORDER.length];
+  const next = isOffers ? 2 : ORDER[(ORDER.indexOf(page) + 1) % ORDER.length];
 
   const chips = m.sections.length > 1
     ? `<nav class="chips">${m.sections.map((s,i)=>`<button class="chip${i?'':' on'}" data-go="s${i}">${s.title}</button>`).join('')}</nav>` : '';
@@ -559,14 +592,14 @@ function renderCategory(page){
 
   app.innerHTML = `
   <header class="head"><div class="photo"></div>
-    <a href="?page=1" data-nav><img class="logo" src="assets/logo.png" alt="الياسمين"></a>
+    <a href="?page=2" data-nav><img class="logo" src="assets/logo.png" alt="الياسمين"></a>
     <h1>${m.title}</h1>
   </header>
   ${offerHTML()}
   ${chips}${secs}
   <div class="pager">
-    <a href="?page=${prev}" data-nav><small>القسم السابق</small><b>${MENU[prev].title}</b></a>
-    <a class="nx" href="?page=${next}" data-nav><small>القسم التالي</small><b>${MENU[next].title}</b></a>
+    <a href="?page=${isOffers ? 2 : prev}" data-nav><small>الرجوع</small><b>${isOffers ? 'القائمة الرئيسية' : MENU[prev]?.title || 'الرئيسية'}</b></a>
+    <a class="nx" href="?page=2" data-nav><small>تصفح</small><b>أقسام المنيو</b></a>
   </div>
   <p class="foot">الأسعار بالجنيه المصري • دوس على السعر لإضافته لطلبك</p>`;
   setupChips();
@@ -591,7 +624,7 @@ document.addEventListener('click', e => {
   const nav = e.target.closest('a[data-nav]');
   if (nav && !e.metaKey && !e.ctrlKey) {
     e.preventDefault();
-    const p = Number(new URL(nav.href, location.origin).searchParams.get('page') || 1);
+    const p = Number(new URL(nav.href, location.origin).searchParams.get('page') || 0);
     render(p, true);
     return;
   }
@@ -615,83 +648,78 @@ function updateBadge(anim){
   const b = $('badge'), n = cartCount();
   b.textContent = n;
   b.classList.toggle('show', n > 0);
-  if (anim && n) { b.classList.remove('show'); void b.offsetWidth; b.classList.add('show'); }
+  if (anim && n > 0) { b.classList.remove('show'); void b.offsetWidth; b.classList.add('show'); }
 }
 
-let tt;
 function toast(msg){
-  const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('show'), 1600);
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t.timer);
+  t.timer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-document.querySelectorAll('.btn').forEach(b => b.addEventListener('pointerdown', e => {
-  const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height);
-  const d = document.createElement('span'); d.className = 'ripple';
-  d.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;
-  b.appendChild(d); setTimeout(()=>d.remove(), 600);
-}));
-
-$('callBtn').addEventListener('click', e => {
-  if (!CONFIG.PHONE) { e.preventDefault(); toast('رقم التليفون هيتضاف قريباً'); return; }
-  $('callBtn').href = 'tel:' + CONFIG.PHONE;
-});
-if (CONFIG.PHONE) $('callBtn').href = 'tel:' + CONFIG.PHONE;
-
-function waLink(text){ return `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(text)}`; }
-function openWA(text){
-  if (!CONFIG.WHATSAPP) { toast('رقم الواتساب هيتضاف قريباً'); return; }
-  window.open(waLink(text), '_blank');
-}
-$('waBtn').addEventListener('click', () => {
-  if (cartCount() > 0) openSheet();
-  else openWA(`أهلاً ${CONFIG.NAME} 👋\nحابب أطلب من المنيو${D?` (عرض خصم ${D}%)`:''}.`);
-});
-
-function orderText(){
-  const lines = Object.values(cart).filter(i=>i.qty>0).map(i =>
-    `• ${i.qty} × ${i.name}${i.size?' ('+i.size+')':''} = ${fmt(i.qty*i.price)} ج`);
-  const totals = `الإجمالي: ${fmt(cartTotal())} جنيه` + (D ? `\n(عرض خصم ${D}%)` : '');
-  return `طلب جديد من منيو ${CONFIG.NAME} 🌼\n\n${lines.join('\n')}\n\n${totals}\n\nالاسم:\nالعنوان:\nملاحظات:`;
-}
-
-function openSheet(){ $('toast').classList.remove('show'); drawSheet(); $('sheet').classList.add('open'); $('scrim').classList.add('open'); }
-function closeSheet(){ $('sheet').classList.remove('open'); $('scrim').classList.remove('open'); }
-$('scrim').onclick = closeSheet;
-
-function drawSheet(){
-  const entries = Object.entries(cart).filter(([,i])=>i.qty>0);
+function renderCart(){
+  const itemsEl = $('items'), totalEl = $('totalBox');
+  const entries = Object.entries(cart).filter(([_, item]) => item.qty > 0);
+  
   if (!entries.length) {
-    $('items').innerHTML = `<div class="empty-cart">طلبك فاضي — دوس على أسعار الأصناف عشان تضيفها.</div>`;
-    $('totalBox').innerHTML = ''; $('sendBtn').style.display = 'none'; $('clearBtn').style.display='none'; return;
+    itemsEl.innerHTML = `<div class="empty-cart">السلة فارغة حالياً</div>`;
+    totalEl.innerHTML = '';
+    return;
   }
-  $('sendBtn').style.display = ''; $('clearBtn').style.display='';
-  $('items').innerHTML = entries.map(([k,i]) => `
+  
+  itemsEl.innerHTML = entries.map(([key, item]) => `
     <div class="it">
-      <div class="nm">${esc(i.name)}${i.size?`<small>${esc(i.size)}</small>`:''}</div>
-      <div class="step"><button data-inc="${k}" aria-label="زيادة">+</button><span>${i.qty}</span><button data-dec="${k}" aria-label="نقص">−</button></div>
-      <div class="sum">${fmt(i.qty*i.price)}</div>
-    </div>`).join('');
-  $('totalBox').innerHTML = `<div class="total"><span>الإجمالي</span><span>${fmt(cartTotal())} ج</span></div>
-    ${D ? `<div class="total save"><span>🎉 عرض خصم ${D}% على المنيو</span></div>` : ''}
-    <div class="small-note">الإجمالي تقريبي وقد تُضاف رسوم التوصيل.</div>`;
-}
-$('items').addEventListener('click', e => {
-  const inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]');
-  if (inc) cart[inc.dataset.inc].qty++;
-  if (dec) { const k = dec.dataset.dec; cart[k].qty--; if (cart[k].qty <= 0) delete cart[k]; }
-  if (inc || dec) { saveCart(); drawSheet(); updateBadge(); syncPrices(); }
-});
-$('clearBtn').onclick = () => { cart = {}; saveCart(); drawSheet(); updateBadge(); syncPrices(); };
-$('sendBtn').onclick = () => openWA(orderText());
+      <div class="nm">${esc(item.name)}${item.size ? `<small>${esc(item.size)}</small>` : ''}</div>
+      <div class="step">
+        <button type="button" onclick="changeQty('${key}', -1)">-</button>
+        <span>${item.qty}</span>
+        <button type="button" onclick="changeQty('${key}', 1)">+</button>
+      </div>
+      <div class="sum">${fmt(item.qty * item.price)} ج.م</div>
+    </div>
+  `).join('');
 
-function syncPrices(){
-  document.querySelectorAll('.p[data-key]').forEach(b => {
-    const q = cart[b.dataset.key] ? cart[b.dataset.key].qty : 0;
-    b.classList.toggle('in', q > 0); b.querySelector('.q').textContent = q;
+  const tot = cartTotal();
+  totalEl.innerHTML = `
+    <div class="total"><span>الإجمالي:</span><span>${fmt(tot)} ج.م</span></div>
+  `;
+}
+
+window.changeQty = function(key, delta){
+  if (cart[key]) {
+    cart[key].qty += delta;
+    if (cart[key].qty <= 0) delete cart[key];
+    saveCart();
+    renderCart();
+    updateBadge();
+    const pPage = getPage();
+    if (pPage > 2 || pPage === 1) renderCategory(pPage);
+  }
+};
+
+const sheet = $('sheet'), scrim = $('scrim');
+function openCart(){ renderCart(); sheet.classList.add('open'); scrim.classList.add('open'); }
+function closeCart(){ sheet.classList.remove('open'); scrim.classList.remove('open'); }
+
+$('waBtn').onclick = openCart;
+scrim.onclick = closeCart;
+$('clearBtn').onclick = () => { cart = {}; saveCart(); renderCart(); updateBadge(); const p = getPage(); if(p>2 || p===1) renderCategory(p); };
+
+$('sendBtn').onclick = () => {
+  const entries = Object.entries(cart).filter(([_, item]) => item.qty > 0);
+  if (!entries.length) { toast('السلة فارغة!'); return; }
+  let text = `سلام عليكم، حابب أطلب من ${CONFIG.NAME}:\n\n`;
+  entries.forEach(([_, item]) => {
+    text += `• ${item.name}${item.size ? ' (' + item.size + ')' : ''} × ${item.qty} = ${item.qty * item.price} ج.م\n`;
   });
-}
+  text += `\n*الإجمالي:* ${fmt(cartTotal())} ج.م`;
+  window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(text)}`, '_blank');
+};
 
-window.addEventListener('popstate', () => { closeSheet(); render(getPage(), false); });
+window.onpopstate = e => render(e.state?.page ?? getPage(), false);
 render(getPage(), false);
 </script>
-</body></html>
+</body>
+</html>
